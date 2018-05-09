@@ -30,12 +30,15 @@ export default class Gitter extends React.Component {
 
   componentDidMount() {
     if ( window.document !== undefined ) {
-      import('gitter-sidecar').then(Sidecar => {
-        this._sidecar = new Sidecar({
-          room: 'webpack/webpack',
-          activationElement: false
+      if (!window.gitterLoadTriggered) {
+        window.gitterLoadTriggered = true;
+        import('gitter-sidecar').then(Sidecar => {
+          this._sidecar = new Sidecar({
+            room: 'webpack/webpack',
+            activationElement: false
+          });
         });
-      });
+      }
 
       this._timeout = setTimeout(
         this._recalculate.bind(this),
