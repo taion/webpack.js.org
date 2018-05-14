@@ -1,6 +1,9 @@
 // Import External Dependencies
 import React from 'react';
 
+// Import helpers
+import isClient from '../../utilities/is-client';
+
 // Load Styling
 import '../Gitter/Gitter.scss';
 
@@ -30,14 +33,12 @@ export default class Gitter extends React.Component {
   }
 
   componentDidMount() {
-    if ( window.document !== undefined ) {
-      if (!window.gitterLoadTriggered) {
-        window.gitterLoadTriggered = true;
-        import('gitter-sidecar').then(Sidecar => {
-          window.gitterSidecar = new Sidecar({
-            room: 'webpack/webpack',
-            activationElement: false
-          });
+    if (isClient && !window.gitterLoadTriggered) {
+      window.gitterLoadTriggered = true;
+      import('gitter-sidecar').then(Sidecar => {
+        this._sidecar = new Sidecar({
+          room: 'webpack/webpack',
+          activationElement: false
         });
       }
 
